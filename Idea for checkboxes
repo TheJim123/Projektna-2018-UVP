@@ -1,0 +1,3 @@
+Write a function, that will trigger upon ticking a box, will count the amount of activated checkbox widgets
+and if the amount is 0 or 1, it'll activate the selected checkbox, and if the new amount is 2, then it'll disable the unchecked boxes
+or something along those lines. Should be simple enough to make.
