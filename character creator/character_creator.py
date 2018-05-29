@@ -55,7 +55,15 @@ class Karakter:
             self.hp = vrednost
 
     def doloci_pp(self):
-            self.pp = 10 - self.hp
+        self.pp = 10 - self.hp
+        
+    def doloci_spell_save(self):
+        if self.razred == 'Druid':
+            self.spell_save = self.level + self.aspect + 3
+        elif self.razred == 'Wizard':
+            self.spell_save = self.level + self.intellect + 3
+        else:
+            self.spell_save = 0
 
     def spremeni_hp(self, vrednost):
         self.hp += vrednost
@@ -71,9 +79,9 @@ class Sheet:
         self.karakter = Karakter()
         window = tk.Tk()
 ###############################################################################
-        vrh = tk.Frame(window,bg='gray', bd=0.5)
+        vrh = tk.Frame(window, bd=0.5, bg = 'gray')
 ###############################################################################
-        imensko_polje = tk.Frame(vrh, bd=0.5, bg='gray')
+        imensko_polje = tk.Frame(vrh, bd=0.5)
         imenska_oznaka = tk.Label(imensko_polje, text='Name:')
         imenski_vnos = tk.Entry(imensko_polje)
 
@@ -81,7 +89,7 @@ class Sheet:
         imenski_vnos.grid(column=2, row=1)
         imensko_polje.grid(column=1, row=1)
 ###############################################################################
-        level_polje = tk.Frame(vrh, bd=0.5, bg='gray')
+        level_polje = tk.Frame(vrh, bd=0.5)
         level_oznaka = tk.Label(level_polje, text='Level:')
         
         level_spremenljivka = tk.IntVar(level_polje)
@@ -94,7 +102,7 @@ class Sheet:
         level_meni.grid(column=2, row=1)
         level_polje.grid(column=2, row=1)
 ###############################################################################
-        rasno_polje = tk.Frame(vrh, bd=0.5, bg='gray')
+        rasno_polje = tk.Frame(vrh, bd=0.5)
         rasna_oznaka = tk.Label(rasno_polje, text='Race:')
         
         rasna_spremenljivka = tk.StringVar(rasno_polje)
@@ -107,7 +115,7 @@ class Sheet:
         rasni_meni.grid(column=2, row=1)
         rasno_polje.grid(column=3, row=1)        
 ###############################################################################
-        razredno_polje = tk.Frame(vrh, bd=0.5, bg='gray')
+        razredno_polje = tk.Frame(vrh, bd=0.5)
         razredna_oznaka = tk.Label(razredno_polje, text='Class:')
         
         razredna_spremenljivka = tk.StringVar(razredno_polje)
@@ -122,14 +130,16 @@ class Sheet:
 ###############################################################################
         vrh.grid(column=3, row=1)
 ###############################################################################
-        atributi = tk.Frame(window, bg='black', bd=0.5)
+        levo = tk.Frame(window, bg='gray')
 ###############################################################################
-        attributes = tk.Frame(atributi, bg='black', bd=1)
+        attribute_frame = tk.Frame(levo,bg='gray', bd=0.5)
+###############################################################################
+        attributes = tk.Frame(attribute_frame, bd=1)
         attributes_naslov = tk.Label(attributes, text='Attributes')
         attributes_naslov.pack()
         attributes.grid(column=1, row=1)
 ###############################################################################
-        aspect_frame = tk.Frame(atributi)
+        aspect_frame = tk.Frame(attribute_frame)
         aspect_label = tk.Label(aspect_frame, text = 'Aspect:')
         aspect_stat = tk.Label(aspect_frame, text = str(self.karakter.aspect))
         aspect_var = tk.IntVar(aspect_frame)
@@ -139,7 +149,7 @@ class Sheet:
         aspect_plus.grid(column=3, row=1)
         aspect_frame.grid(column=1, row=2)
 ###############################################################################
-        intellect_frame = tk.Frame(atributi)
+        intellect_frame = tk.Frame(attribute_frame)
         intellect_label = tk.Label(intellect_frame, text = 'Intellect:')
         intellect_stat = tk.Label(intellect_frame, text = str(self.karakter.intellect))
         intellect_var = tk.IntVar(intellect_frame)
@@ -149,7 +159,7 @@ class Sheet:
         intellect_plus.grid(column=3, row=1)
         intellect_frame.grid(column=1, row=3)
 ###############################################################################
-        power_frame = tk.Frame(atributi)
+        power_frame = tk.Frame(attribute_frame)
         power_label = tk.Label(power_frame, text = 'Power:')
         power_stat = tk.Label(power_frame, text = str(self.karakter.power))
         power_var = tk.IntVar(power_frame)
@@ -159,7 +169,7 @@ class Sheet:
         power_plus.grid(column=3, row=1)
         power_frame.grid(column=1, row=4)
 ###############################################################################
-        reflex_frame = tk.Frame(atributi)
+        reflex_frame = tk.Frame(attribute_frame)
         reflex_label = tk.Label(reflex_frame, text = 'Reflex:')
         reflex_stat = tk.Label(reflex_frame, text = str(self.karakter.reflex))
         reflex_var = tk.IntVar(reflex_frame)
@@ -169,9 +179,97 @@ class Sheet:
         reflex_plus.grid(column=3, row=1)
         reflex_frame.grid(column=1, row=5)
 ###############################################################################
-        atributi.grid(column=1, row=2)
+        attribute_frame.pack()
 ###############################################################################
-        
+        magic_frame = tk.Frame(levo)
+###############################################################################
+        magic = tk.Frame(magic_frame)
+        magic_naslov = tk.Label(magic, text = 'Magic')
+        mp = tk.Label(magic, text='mp: {}'.format(self.karakter.mp))
+        spell_save = tk.Label(magic, text = 'spell save: {}'.format(self.karakter.spell_save))
+        magic_naslov.grid(column=2, row=1)
+        mp.grid(column=1, row=2)
+        spell_save.grid(column=3, row=2)
+        magic.pack()
+        spellbook = tk.Frame(magic_frame, bg='gray')
+        spell_1 = tk.Frame(spellbook)
+        spell_1_name_label = tk.Label(spell_1, text='Spell:')
+        spell_1_name = tk.Entry(spell_1)
+        spell_1_cost_label = tk.Label(spell_1, text='Cost:')
+        spell_1_cost = tk.Entry(spell_1)
+        spell_1_name_label.grid(column=1, row=1)
+        spell_1_name.grid(column=2, row=1)
+        spell_1_cost_label.grid(column=3, row=1)
+        spell_1_cost.grid(column=4, row=1)
+        spell_1.pack()
+################################################################################
+        spell_2 = tk.Frame(spellbook)
+        spell_2_name_label = tk.Label(spell_2, text='Spell:')
+        spell_2_name = tk.Entry(spell_2)
+        spell_2_cost_label = tk.Label(spell_2, text='Cost:')
+        spell_2_cost = tk.Entry(spell_2)
+        spell_2_name_label.grid(column=1, row=1)
+        spell_2_name.grid(column=2, row=1)
+        spell_2_cost_label.grid(column=3, row=1)
+        spell_2_cost.grid(column=4, row=1)
+        spell_2.pack()
+################################################################################
+        spell_3 = tk.Frame(spellbook)
+        spell_3_name_label = tk.Label(spell_3, text='Spell:')
+        spell_3_name = tk.Entry(spell_3)
+        spell_3_cost_label = tk.Label(spell_3, text='Cost:')
+        spell_3_cost = tk.Entry(spell_3)
+        spell_3_name_label.grid(column=1, row=1)
+        spell_3_name.grid(column=2, row=1)
+        spell_3_cost_label.grid(column=3, row=1)
+        spell_3_cost.grid(column=4, row=1)
+        spell_3.pack()
+################################################################################
+        spell_4 = tk.Frame(spellbook)
+        spell_4_name_label = tk.Label(spell_4, text='Spell:')
+        spell_4_name = tk.Entry(spell_4)
+        spell_4_cost_label = tk.Label(spell_4, text='Cost:')
+        spell_4_cost = tk.Entry(spell_4)
+        spell_4_name_label.grid(column=1, row=1)
+        spell_4_name.grid(column=2, row=1)
+        spell_4_cost_label.grid(column=3, row=1)
+        spell_4_cost.grid(column=4, row=1)
+        spell_4.pack()
+################################################################################
+        spell_5 = tk.Frame(spellbook)
+        spell_5_name_label = tk.Label(spell_5, text='Spell:')
+        spell_5_name = tk.Entry(spell_5)
+        spell_5_cost_label = tk.Label(spell_5, text='Cost:')
+        spell_5_cost = tk.Entry(spell_5)
+        spell_5_name_label.grid(column=1, row=1)
+        spell_5_name.grid(column=2, row=1)
+        spell_5_cost_label.grid(column=3, row=1)
+        spell_5_cost.grid(column=4, row=1)
+        spell_5.pack()
+################################################################################
+        spellbook.pack()
+###############################################################################
+        magic_frame.pack()
+###############################################################################
+        skill_frame = tk.Frame(levo)
+################################################################################
+        skill_naslov = tk.Label(skill_frame, text='Skills:')
+        skills = tk.Frame(skill_frame)
+        skill_1 = tk.Entry(skills)
+        skill_1.grid(column=1, row=1)
+        skill_2 = tk.Entry(skills)
+        skill_2.grid(column=3, row=1)
+        skill_3 = tk.Entry(skills)
+        skill_3.grid(column=1, row=2)
+        skill_4 = tk.Entry(skills)
+        skill_4.grid(column=3, row=2)
+        skill_naslov.pack()
+        skills.pack()
+################################################################################
+        skill_frame.pack()
+###############################################################################
+        levo.grid(column = 1, row = 2)
+###############################################################################
 ###############################################################################
 ###############################################################################
 ###############################################################################
