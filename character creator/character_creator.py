@@ -16,6 +16,7 @@ class Karakter:
         self.reflex = 0
         self.pp = 0
         self.hp = 0
+        self.toughness = 0
         self.mp = 0
         self.sposobnosti = []
         self.oklep = []
@@ -23,6 +24,10 @@ class Karakter:
         self.seznam_urokov = []
         self.spell_save = 0
         self.xp = 0
+        self.gp = 0
+        self.sp = 0
+        self.cp = 0
+        self.other_wealth = 0
         
     def nastavi_ime(self, ime):
         self.ime = ime
@@ -56,6 +61,14 @@ class Karakter:
 
     def doloci_pp(self):
         self.pp = 10 - self.hp
+
+    def doloci_toughness(self):
+        if self.razred == 'Druid' or self.razred == 'Wizard':
+            self.toughness = 5
+        elif self.razred == 'Rogue':
+            self.toughness = 6
+        elif self.razred == 'Warrior':
+            self.toughness = 7
         
     def doloci_spell_save(self):
         if self.razred == 'Druid':
@@ -130,7 +143,9 @@ class Sheet:
 ###############################################################################
         vrh.grid(column=3, row=1)
 ###############################################################################
-        levo = tk.Frame(window, bg='gray')
+        center = tk.Frame(window, bd=1)
+###############################################################################
+        levo = tk.Frame(center, bg='gray', bd=1)
 ###############################################################################
         attribute_frame = tk.Frame(levo,bg='gray', bd=0.5)
 ###############################################################################
@@ -181,12 +196,12 @@ class Sheet:
 ###############################################################################
         attribute_frame.pack()
 ###############################################################################
-        magic_frame = tk.Frame(levo)
+        magic_frame = tk.Frame(levo, bd=2)
 ###############################################################################
         magic = tk.Frame(magic_frame)
         magic_naslov = tk.Label(magic, text = 'Magic')
-        mp = tk.Label(magic, text='mp: {}'.format(self.karakter.mp))
-        spell_save = tk.Label(magic, text = 'spell save: {}'.format(self.karakter.spell_save))
+        mp = tk.Label(magic, text='Magic Points: {}'.format(self.karakter.mp))
+        spell_save = tk.Label(magic, text = 'Spell Save: {}'.format(self.karakter.spell_save))
         magic_naslov.grid(column=2, row=1)
         mp.grid(column=1, row=2)
         spell_save.grid(column=3, row=2)
@@ -251,7 +266,7 @@ class Sheet:
 ###############################################################################
         magic_frame.pack()
 ###############################################################################
-        skill_frame = tk.Frame(levo)
+        skill_frame = tk.Frame(levo, bd=1)
 ################################################################################
         skill_naslov = tk.Label(skill_frame, text='Skills:')
         skills = tk.Frame(skill_frame)
@@ -270,10 +285,161 @@ class Sheet:
 ###############################################################################
         levo.grid(column = 1, row = 2)
 ###############################################################################
+        desno = tk.Frame(center, bg='gray', bd=1)
 ###############################################################################
+        stats = tk.Frame(desno, bg='gray', bd=1)
+        toughness_frame = tk.Frame(stats, bd=2)
+        toughness_label = tk.Label(toughness_frame, text = 'Toughness: {}'.format(str(self.karakter.toughness)))
+        hp_frame = tk.Frame(stats, bd=2)
+        hp_label = tk.Label(hp_frame, text = 'Hit Points: {}'.format(str(self.karakter.hp)))
+        pp_frame = tk.Label(stats, bd=2)
+        pp_label = tk.Label(pp_frame, text = 'Power Points: {}'.format(str(self.karakter.pp)))
 ###############################################################################
+        toughness_label.pack()
+        toughness_frame.grid(column=1, row=1)
+        hp_label.pack()
+        hp_frame.grid(column=2, row=1)
+        pp_label.pack()
+        pp_frame.grid(column=3, row=1)
 ###############################################################################
+        stats.pack()
 ###############################################################################
+        combat_frame = tk.Frame(desno, bd=1)
+###############################################################################
+        combat_label =tk.Label(combat_frame, text='Combat')
+        combat_label.pack()
+        weapon_1 = tk.Frame(combat_frame)
+        weapon_1_label = tk.Label(weapon_1, text='Weapon:')
+        weapon_1_name = tk.Entry(weapon_1)
+        bonuses_1_label = tk.Label(weapon_1, text = 'Bonuses:')
+        bonuses_1 = tk.Entry(weapon_1)
+###############################################################################
+        weapon_2 = tk.Frame(combat_frame)
+        weapon_2_label = tk.Label(weapon_2, text='Weapon:')
+        weapon_2_name = tk.Entry(weapon_2)
+        bonuses_2_label = tk.Label(weapon_2, text = 'Bonuses:')
+        bonuses_2 = tk.Entry(weapon_2)
+###############################################################################
+        weapon_3 = tk.Frame(combat_frame)
+        weapon_3_label = tk.Label(weapon_3, text='Weapon:')
+        weapon_3_name = tk.Entry(weapon_3)
+        bonuses_3_label = tk.Label(weapon_3, text = 'Bonuses:')
+        bonuses_3 = tk.Entry(weapon_3)
+###############################################################################
+        weapon_1_label.grid(column=1, row=1)
+        weapon_1_name.grid(column=2, row=1)
+        bonuses_1_label.grid(column=3, row=1)
+        bonuses_1.grid(column=4, row=1)
+        weapon_1.pack()
+###############################################################################
+        weapon_2_label.grid(column=1, row=1)
+        weapon_2_name.grid(column=2, row=1)
+        bonuses_2_label.grid(column=3, row=1)
+        bonuses_2.grid(column=4, row=1)
+        weapon_2.pack()
+###############################################################################
+        weapon_3_label.grid(column=1, row=1)
+        weapon_3_name.grid(column=2, row=1)
+        bonuses_3_label.grid(column=3, row=1)
+        bonuses_3.grid(column=4, row=1)
+        weapon_3.pack()
+###############################################################################
+        combat_frame.pack()
+###############################################################################
+        class_abilities = tk.Frame(desno, bd=1)
+###############################################################################
+        class_abilities_label = tk.Label(class_abilities, text = 'Class abilities:')
+###############################################################################
+        ability_1 = tk.Frame(class_abilities, bd=1)
+        ability_1_label = tk.Label(ability_1, text = 'Ability:')
+        ability_1_name = tk.Entry(ability_1)
+###############################################################################
+        ability_2 = tk.Frame(class_abilities, bd=1)
+        ability_2_label = tk.Label(ability_2, text = 'Ability:')
+        ability_2_name = tk.Entry(ability_2)
+###############################################################################
+        ability_3 = tk.Frame(class_abilities, bd=1)
+        ability_3_label = tk.Label(ability_3, text = 'Ability:')
+        ability_3_name = tk.Entry(ability_3)
+###############################################################################
+        ability_4 = tk.Frame(class_abilities, bd=1)
+        ability_4_label = tk.Label(ability_4, text = 'Ability:')
+        ability_4_name = tk.Entry(ability_4)
+###############################################################################
+        ability_5 = tk.Frame(class_abilities, bd=1)
+        ability_5_label = tk.Label(ability_5, text = 'Ability:')
+        ability_5_name = tk.Entry(ability_5)
+###############################################################################
+        ability_6 = tk.Frame(class_abilities, bd=1)
+        ability_6_label = tk.Label(ability_6, text = 'Ability:')
+        ability_6_name = tk.Entry(ability_6)
+###############################################################################
+        class_abilities_label.pack()
+###############################################################################        
+        ability_1_label.grid(column=1, row=1)
+        ability_1_name.grid(column=2, row=1)
+        ability_1.pack()
+###############################################################################
+        ability_2_label.grid(column=1, row=1)
+        ability_2_name.grid(column=2, row=1)
+        ability_2.pack()
+###############################################################################
+        ability_3_label.grid(column=1, row=1)
+        ability_3_name.grid(column=2, row=1)
+        ability_3.pack()
+###############################################################################
+        ability_4_label.grid(column=1, row=1)
+        ability_4_name.grid(column=2, row=1)
+        ability_4.pack()
+###############################################################################
+        ability_5_label.grid(column=1, row=1)
+        ability_5_name.grid(column=2, row=1)
+        ability_5.pack()
+###############################################################################
+        ability_6_label.grid(column=1, row=1)
+        ability_6_name.grid(column=2, row=1)
+        ability_6.pack()
+###############################################################################
+        class_abilities.pack()
+###############################################################################
+        wealth_frame = tk.Frame(desno, bd=2)
+###############################################################################
+        wealth_label = tk.Label(wealth_frame, text='Wealth:')
+        money_frame = tk.Frame(wealth_frame, bd=1)
+        gp_frame = tk.Frame(money_frame, bd=1)
+        gp_label = tk.Label(gp_frame, text = 'GP: {}'.format(str(self.karakter.gp)))
+        gp_amount = tk.Entry(gp_frame)
+        sp_frame = tk.Frame(money_frame, bd=1)
+        sp_label = tk.Label(sp_frame, text = 'SP: {}'.format(str(self.karakter.sp)))
+        sp_amount = tk.Entry(sp_frame)
+        cp_frame = tk.Label(money_frame, bd=1)
+        cp_label = tk.Label(cp_frame, text = 'CP: {}'.format(str(self.karakter.cp)))
+        cp_amount = tk.Entry(cp_frame)
+        other_frame = tk.Frame(wealth_frame, bd=1)
+        other_label = tk.Label(other_frame, text = 'Other: {}'.format(str(self.karakter.other_wealth)))
+        other_amount = tk.Entry(other_frame)
+###############################################################################
+        wealth_label.pack()
+        money_frame.pack()
+        other_frame.pack()
+###############################################################################
+        gp_frame.grid(column=1, row=1)
+        gp_label.grid(column=1, row=1)
+        gp_amount.grid(column=2, row=1)
+        sp_frame.grid(column=2, row=1)
+        sp_label.grid(column=1, row=1)
+        sp_amount.grid(column=2, row=1)
+        cp_frame.grid(column=3, row=1)
+        cp_label.grid(column=1, row=1)
+        cp_amount.grid(column=2, row=1)
+        other_label.grid(column=1, row=1)
+        other_amount.grid(column=2, row=1)
+###############################################################################
+        wealth_frame.pack()
+###############################################################################
+        desno.grid(column = 3, row = 2)
+###############################################################################
+        center.grid(column=3, row=2)
 ###############################################################################
         window.mainloop()
 
