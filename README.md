@@ -1,3 +1,3 @@
 # Projektna-2018-UVP
-## A chacacter-creation app for tinyd10 
+## A character-creation app for tinyd10 
 The purpose of app is to make creating a new character for the table-top rpg as simple and easy as possible, for complete beginners. Since that process is fairly simple on it's own, the main function of the app will be to calculate most, if not all things, for you, the user. It'll also include a library of item-descriptions, a 'spellbook' and some other useful things, provided I find the time and will to make and implement it all. There's also a fair possibility of updating the app to add a D&D 5e and Pathfinder mode, and maybe some others as well.
